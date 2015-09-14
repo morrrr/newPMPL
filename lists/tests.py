@@ -4,13 +4,11 @@ from django.http import HttpRequest
 
 from lists.views import home_page
 
-
 class HomePageTest(TestCase):
 
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')
         self.assertEqual(found.func, home_page)
-
 
     def test_home_page_returns_correct_html(self):
         request = HttpRequest()  #1
@@ -18,3 +16,4 @@ class HomePageTest(TestCase):
         self.assertTrue(response.content.startswith(b'<html>'))  #3
         self.assertIn(b'<title>To-Do lists</title><body>Nama : Agnes Agustinamora<br>NPM : 1206239421</body>', response.content)  #4
         self.assertTrue(response.content.endswith(b'</html>'))  #5
+		
