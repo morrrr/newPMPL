@@ -67,7 +67,7 @@ class HomePageTest(TestCase):
         self.assertGreater(Item.objects.count(), 0)
         self.assertIn('sibuk tapi santai', response.content.decode())
     
-    def test_home_page_comment_if_to_do_list_lessthanfive(self):
+    def test_home_page_comment_if_to_do_list_greaterthanfive(self):
         Item.objects.create(text='i1')
         Item.objects.create(text='i2')
         Item.objects.create(text='i3')
