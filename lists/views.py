@@ -3,20 +3,20 @@ from lists.models import Item, List
 
 def view_list(request, list_id):
     list_ = List.objects.get(id=list_id)
-    return render(request, 'list.html', {'list': list_})
+    countList = Item.objects.filter(list_id=list_.id).count()
+    if countList == 0 :
+        comment = 'yey, waktunya berlibur'
+    if (countList < 5) and (countList != 0) :
+        comment = 'sibuk tapi santai'
+    if countList >= 5 :
+        comment = 'oh tidak'
+    return render(request, 'list.html', {'list': list_, 'comment':comment})
     
 def home_page(request):
     #if request.method == 'POST':
      #   Item.objects.create(text=request.POST['item_text'])
-      #  return redirect('/lists/the-only-list-in-the-world/')
-    
-    if Item.objects.count() == 0 :
-        comment = 'yey, waktunya berlibur'
-    if (Item.objects.count() < 5) and (Item.objects.count() != 0) :
-        comment = 'sibuk tapi santai'
-    if Item.objects.count() >= 5 :
-        comment = 'oh tidak'   
-        
+      #  return redirect('/lists/the-only-list-in-the-world/')   
+    comment = 'yey, waktunya berlibur'    
     return render(request, 'home.html', {'comment':comment})
 
 def new_list(request):
