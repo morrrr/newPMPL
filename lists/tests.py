@@ -24,32 +24,6 @@ class HomePageTest(TestCase):
         request = HttpRequest()
         home_page(request)
         self.assertEqual(Item.objects.count(), 0)
-            
-    def test_home_page_comment_if_to_do_list_lessthanfive(self):
-        list_ = List.objects.create()
-        Item.objects.create(text='i1', list=list_)
-        Item.objects.create(text='i2', list=list_)
-        
-        request = HttpRequest()
-        response = home_page(request)
-
-        self.assertLess(Item.objects.count(), 5)
-        self.assertGreater(Item.objects.count(), 0)
-        self.assertIn('sibuk tapi santai', response.content.decode())
-    
-    def test_home_page_comment_if_to_do_list_greaterthanfive(self):
-        list_ = List.objects.create()
-        Item.objects.create(text='i1', list=list_)
-        Item.objects.create(text='i2', list=list_)
-        Item.objects.create(text='i3', list=list_)
-        Item.objects.create(text='i4', list=list_)
-        Item.objects.create(text='i5', list=list_)
-        
-        request = HttpRequest()
-        response = home_page(request)
-        
-        self.assertGreaterEqual(Item.objects.count(), 5)
-        self.assertIn('oh tidak', response.content.decode())
 
 class ListAndItemModelsTest(TestCase):
 
@@ -108,6 +82,30 @@ class ListViewTest(TestCase):
         correct_list = List.objects.create()
         response = self.client.get('/lists/%d/' % (correct_list.id,))
         self.assertEqual(response.context['list'], correct_list)
+    
+    def test_list_page_comment_if_to_do_list_lessthanfive(self):
+        list_ = List.objects.create()
+        Item.objects.create(text='i1', list=list_)
+        Item.objects.create(text='i2', list=list_)
+        
+        response = self.client.get('/lists/%d/' % (list_.id,))
+
+        self.assertLess(Item.objects.count(), 5)
+        self.assertGreater(Item.objects.count(), 0)
+        self.assertIn('sibuk tapi santai', response.content.decode())
+    
+    def test_list_page_comment_if_to_do_list_greaterthanfive(self):
+        list_ = List.objects.create()
+        Item.objects.create(text='i1', list=list_)
+        Item.objects.create(text='i2', list=list_)
+        Item.objects.create(text='i3', list=list_)
+        Item.objects.create(text='i4', list=list_)
+        Item.objects.create(text='i5', list=list_)
+        
+        response = self.client.get('/lists/%d/' % (list_.id,))
+        
+        self.assertGreaterEqual(Item.objects.count(), 5)
+        self.assertIn('oh tidak', response.content.decode())
         
 class NewListTest(TestCase):
     
