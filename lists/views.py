@@ -16,6 +16,11 @@ def home_page(request):
     #if request.method == 'POST':
      #   Item.objects.create(text=request.POST['item_text'])
       #  return redirect('/lists/the-only-list-in-the-world/')   
+    # comment = 'yey, waktunya berlibur'    
+    # return render(request, 'home.html', {'comment':comment})
+    return render(request, 'index-one-page.html')
+
+def list_page(request):
     comment = 'yey, waktunya berlibur'    
     return render(request, 'home.html', {'comment':comment})
 
