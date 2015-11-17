@@ -4,9 +4,7 @@ from django.core.exceptions import ValidationError
 
 def view_list(request, list_id):
     list_ = List.objects.get(id=list_id)
-    if request.method == 'POST':
-        Item.objects.create(text=request.POST['item_text'], list=list_)
-        return redirect('/lists/%d/' % (list_.id,))
+    
     countList = Item.objects.filter(list_id=list_.id).count()
     if countList == 0 :
         comment = 'yey, waktunya berlibur'
@@ -14,6 +12,10 @@ def view_list(request, list_id):
         comment = 'sibuk tapi santai'
     if countList >= 5 :
         comment = 'oh tidak'
+    
+    if request.method == 'POST':
+        Item.objects.create(text=request.POST['item_text'], list=list_)
+        return redirect('/lists/%d/' % (list_.id,))
     return render(request, 'list.html', {'list': list_, 'comment':comment})
     
 def home_page(request):
